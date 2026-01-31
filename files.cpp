@@ -41,7 +41,6 @@ void ManageFile::writeFile(const string& filename, const Reminder& remind) {
     }
 
     file << remind.id << "," << remind.text << "," << (remind.completed ? "true" : "false") << "\n";
-    cout << "Reminder added!";
 }
 
 vector<Reminder> ManageFile::readAllFiles() {

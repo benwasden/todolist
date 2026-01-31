@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "files.h"  // gives access to Reminder and ManageFile
+#include "files.h"
 
 class MakeReminder {
 public:

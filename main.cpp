@@ -4,6 +4,7 @@
 #include <chrono>
 #include "reminder.h"
 #include "files.h"
+#include "manage.h"
 using namespace std;
 
 void clearScreen();
@@ -21,12 +22,13 @@ int main()
         cin >> choice;
         switch (choice) {
             case 1: {
-                clearScreen();;
+                clearScreen();
                 MakeReminder reminder;
                 auto newReminder = reminder.addReminder();
 
                 ManageFile file;
                 file.writeFile(newReminder.filename, newReminder.reminder);
+                cout << "Successfully added!\n";
                 this_thread::sleep_for(chrono::seconds(1));
                 break;
             }
@@ -54,13 +56,23 @@ int main()
                 break;
             }
             case 3: {
-                cout << "case 3!";
+                clearScreen();
+                Manage manage;
+                string selection = manage.selectOption();
+                vector<int> reminderIndex = manage.requestedGoals(selection);
+                if (!reminderIndex.empty()) {
+                    
+                };
+                cout << "Press Enter to continue..." << flush;
+                cin.ignore();
+                cin.get();
                 break;
             }
             case 4: {
                 break;
             }
             case 5: {
+                clearScreen();
                 cout << "Thanks for using the Reminders app!\n";
                 return 0;
             }
