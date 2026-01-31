@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 
+// Opens a csv file and takes its info and stores it in a vector
 vector<Reminder> ManageFile::openFile(const string& filename) {
     vector<Reminder> reminders;
     ifstream file(filename);
@@ -33,6 +34,7 @@ vector<Reminder> ManageFile::openFile(const string& filename) {
     return reminders;
 }
 
+// Opens a csv file and writes a new reminder to it
 void ManageFile::writeFile(const string& filename, const Reminder& remind) {
     ofstream file(filename, ios::app);
     if (!file.is_open()) {
@@ -43,6 +45,7 @@ void ManageFile::writeFile(const string& filename, const Reminder& remind) {
     file << remind.id << "," << remind.text << "," << (remind.completed ? "true" : "false") << "\n";
 }
 
+// Uses the prior openFile function to get the reminders from all files
 vector<Reminder> ManageFile::readAllFiles() {
     vector<Reminder> all;
 
@@ -59,6 +62,7 @@ vector<Reminder> ManageFile::readAllFiles() {
     return all;
 }
 
+// Iterates through a file to see the next for-sure available ID
 int ManageFile::getNextId(const string& filename) {
     auto reminders = openFile(filename);
 
@@ -72,6 +76,8 @@ int ManageFile::getNextId(const string& filename) {
     return maxId + 1;
 }
 
+// Opens a file and adds them all to a vector and then marks the requested reminder as complete before writing
+// the vector back to the csv file
 void ManageFile::markComplete(const string& filename, int id) {
     vector<Reminder> reminders = openFile(filename);
 
@@ -102,6 +108,7 @@ void ManageFile::markComplete(const string& filename, int id) {
     cout << "Reminder complete!\n";
 }
 
+// Function to delete all completed reminders across all files
 void ManageFile::deleteCompleted(const string& filename) {
     vector<Reminder> reminders = openFile(filename);
 

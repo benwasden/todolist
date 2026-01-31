@@ -23,11 +23,14 @@ int main()
         cin >> choice;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         switch (choice) {
+            // Create a new reminder
             case 1: {
                 clearScreen();
                 MakeReminder reminder;
+                // Runs addReminder function which asks user to select list and name reminder
                 auto newReminder = reminder.addReminder();
 
+                // Writes reminder to file
                 ManageFile file;
                 file.writeFile(newReminder.filename, newReminder.reminder);
 
@@ -36,6 +39,7 @@ int main()
                 break;
             }
             case 2: {
+                // Displays all reminders from all lists
                 clearScreen();
                 ManageFile files;
                 vector<Reminder> genFile = files.readAllFiles();
@@ -58,6 +62,7 @@ int main()
                 break;
             }
             case 3: {
+                // Select specific list to see reminders
                 clearScreen();
                 Manage manage;
                 cout << "Which list do you want to view?\n";
@@ -65,6 +70,7 @@ int main()
                 vector<Reminder> goals = manage.requestedGoals(selection);
                 if (!goals.empty()) {
                     string choice2;
+                    // Asks whether user wants to mark as complete
                     cout << "Would you like to mark a goal as complete? Y/N: ";
                     cin >> choice2;
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -77,6 +83,7 @@ int main()
                 break;
             }
             case 4: {
+                // Delete all completed reminders from all lists
                 clearScreen();
                 string choice3;
                 cout << "Are you sure you want to delete all completed reminders from all lists? Y/N: ";

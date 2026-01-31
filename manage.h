@@ -4,6 +4,7 @@
 
 using namespace std;
 
+// Create manage class
 class Manage {
     public:
         string selectOption();

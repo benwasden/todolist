@@ -5,6 +5,9 @@
 #include "manage.h"
 using namespace std;
 
+// Basic menu setup for users to select a reminders list to open.
+// Originally part of main.cpp, moved here because it was being used
+// in multiple places.
 string Manage::selectOption() {
     int selection = 0;
     string filename;
@@ -29,6 +32,7 @@ string Manage::selectOption() {
     return filename;
 };
 
+// Gathers the goals from a specific requested list
 vector<Reminder> Manage::requestedGoals(string option) {
     ManageFile file;
     vector<Reminder> goals = file.openFile(option);
@@ -50,6 +54,8 @@ vector<Reminder> Manage::requestedGoals(string option) {
     return goals;
 }
 
+// Asks the user to enter an id and then uses the markComplete function in
+// the ManageFile class to mark it as complete
 void Manage::completeGoal(const string& filename) {
     int id;
     cout << "Please enter the ID of the goal you want to complete: ";
@@ -58,6 +64,8 @@ void Manage::completeGoal(const string& filename) {
     file.markComplete(filename, id);
 }
 
+// Runs the deleteCompleted function on all 4 lists to delete
+// all completed reminders
 void Manage::deleteAllCompletedGoals() {
     ManageFile file;
     file.deleteCompleted("data/general.csv");

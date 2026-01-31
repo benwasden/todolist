@@ -5,12 +5,14 @@
 
 using namespace std;
 
+// A Reminder object with its own variables for use in other parts of app
 struct Reminder {
     int id;
     string text;
     bool completed;
 };
 
+// Largest class meant to do operations with csv files
 class ManageFile {
 public:
     vector<Reminder> openFile(const string& filename);
