@@ -59,11 +59,16 @@ int main()
                 clearScreen();
                 Manage manage;
                 string selection = manage.selectOption();
-                vector<int> reminderIndex = manage.requestedGoals(selection);
-                if (!reminderIndex.empty()) {
-                    
+                vector<Reminder> goals = manage.requestedGoals(selection);
+                if (!goals.empty()) {
+                    string choice2;
+                    cout << "Would you like to mark a goal as complete? Y/N: ";
+                    cin >> choice2;
+                    if (choice2 == "Y" || choice2 == "Yes" || choice2 == "y" || choice2 == "yes") {
+                        manage.completeGoal(selection);
+                    }
                 };
-                cout << "Press Enter to continue..." << flush;
+                cout << "Press Enter to return home..." << flush;
                 cin.ignore();
                 cin.get();
                 break;

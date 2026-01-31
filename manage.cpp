@@ -29,8 +29,7 @@ string Manage::selectOption() {
     return filename;
 };
 
-vector<int> Manage::requestedGoals(string option) {
-    vector<int> remIndex;
+vector<Reminder> Manage::requestedGoals(string option) {
     ManageFile file;
     vector<Reminder> goals = file.openFile(option);
     if (!goals.empty()) {
@@ -42,11 +41,19 @@ vector<int> Manage::requestedGoals(string option) {
             } else {
                 result = "X";
             };
-            remIndex.push_back(pair.id);
+
             cout << pair.id << ". " << pair.text << " - [" << result << "]" << endl;
         }
     } else {
         cout << "No reminders have been entered.\n";
     }
-    return remIndex;
+    return goals;
+}
+
+void Manage::completeGoal(const string& filename) {
+    int id;
+    cout << "Please enter the ID of the goal you want to complete: ";
+    cin >> id;
+    ManageFile file;
+    file.markComplete(filename, id);
 }

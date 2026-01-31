@@ -17,4 +17,6 @@ public:
     void writeFile(const string& filename, const Reminder& remind);
     vector<Reminder> readAllFiles();
     int getNextId(const string& filename);
+    void markComplete(const string& filename, int id);
+    void deleteCompleted(const string& filename);
 };

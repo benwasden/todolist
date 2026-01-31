@@ -71,3 +71,33 @@ int ManageFile::getNextId(const string& filename) {
 
     return maxId + 1;
 }
+
+void ManageFile::markComplete(const string& filename, int id) {
+    vector<Reminder> reminders = openFile(filename);
+
+    bool found = false;
+    for (auto& remind : reminders) {
+        if (remind.id == id) {
+            remind.completed = true;
+            found = true;
+            break;
+        }
+    };
+
+    if (!found) {
+        cerr << "Couldn't find a reminder with ID " << id << "\n";
+        return;
+    };
+
+    ofstream file(filename, ios::trunc);
+    if (!file.is_open()) {
+        cerr << "Error trying to open that file.\n";
+        return;
+    };
+
+    for (const auto& remind : reminders) {
+        file << remind.id << "," << remind.text << "," << (remind.completed ? "true" : "false") << "\n";
+    }
+
+    cout << "Reminder complete!\n";
+}

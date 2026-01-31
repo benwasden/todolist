@@ -7,5 +7,6 @@ using namespace std;
 class Manage {
     public:
         string selectOption();
-        vector<int> requestedGoals(string option);
+        vector<Reminder> requestedGoals(string option);
+        void completeGoal(const string& filename);
 };
