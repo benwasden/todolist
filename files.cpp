@@ -49,6 +49,8 @@ void ManageFile::writeFile(const string& filename, const Reminder& remind) {
 vector<Reminder> ManageFile::readAllFiles() {
     vector<Reminder> all;
 
+    // Sets up function to append the contents of one file
+    // to the end of the existing "all" vector
     auto append = [&](const string& file) {
         auto next = openFile(file);
         all.insert(all.end(), next.begin(), next.end());
@@ -66,6 +68,7 @@ vector<Reminder> ManageFile::readAllFiles() {
 int ManageFile::getNextId(const string& filename) {
     auto reminders = openFile(filename);
 
+    // Iterating
     int maxId = 0;
     for (const auto& remind : reminders) {
         if (remind.id > maxId) {
@@ -81,6 +84,8 @@ int ManageFile::getNextId(const string& filename) {
 void ManageFile::markComplete(const string& filename, int id) {
     vector<Reminder> reminders = openFile(filename);
 
+    // Iterates through all entries in csv and finds the id
+    // of requested reminder, then marks as complete
     bool found = false;
     for (auto& remind : reminders) {
         if (remind.id == id) {
@@ -95,12 +100,14 @@ void ManageFile::markComplete(const string& filename, int id) {
         return;
     };
 
+    // Opens the file
     ofstream file(filename, ios::trunc);
     if (!file.is_open()) {
         cerr << "Error trying to open that file.\n";
         return;
     };
 
+    // Rewrites the data of all reminders back to file with completed goal
     for (const auto& remind : reminders) {
         file << remind.id << "," << remind.text << "," << (remind.completed ? "true" : "false") << "\n";
     }
@@ -116,6 +123,8 @@ void ManageFile::deleteCompleted(const string& filename) {
         return;
     }
 
+    // Sets up a vector that compares new remainder vector
+    // to reminders and deletes completed goals
     vector<Reminder> remainder;
     for (const auto& remind : reminders) {
         if (!remind.completed) {
@@ -127,6 +136,7 @@ void ManageFile::deleteCompleted(const string& filename) {
         return;
     };
 
+    // Writes remainder to file
     ofstream file(filename, ios::trunc);
     if (!file.is_open()) {
         cerr << "Error opening" << filename << "\n";

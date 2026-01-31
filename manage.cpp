@@ -36,6 +36,8 @@ string Manage::selectOption() {
 vector<Reminder> Manage::requestedGoals(string option) {
     ManageFile file;
     vector<Reminder> goals = file.openFile(option);
+    // Checks to see if there are goals in requested file
+    // If so, it then prints all them out
     if (!goals.empty()) {
         cout << "---Reminders---\n";
         for (const auto& pair : goals) {
