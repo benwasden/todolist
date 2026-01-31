@@ -101,3 +101,32 @@ void ManageFile::markComplete(const string& filename, int id) {
 
     cout << "Reminder complete!\n";
 }
+
+void ManageFile::deleteCompleted(const string& filename) {
+    vector<Reminder> reminders = openFile(filename);
+
+    if (reminders.empty()) {
+        return;
+    }
+
+    vector<Reminder> remainder;
+    for (const auto& remind : reminders) {
+        if (!remind.completed) {
+            remainder.push_back(remind);
+        };
+    };
+
+    if (remainder.size() == reminders.size()) {
+        return;
+    };
+
+    ofstream file(filename, ios::trunc);
+    if (!file.is_open()) {
+        cerr << "Error opening" << filename << "\n";
+        return;
+    };
+
+    for (const auto& remind : remainder) {
+        file << remind.id << "," << remind.text << "," << (remind.completed ? "true" : "false") << "\n";
+    };
+}
