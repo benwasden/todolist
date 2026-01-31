@@ -9,9 +9,8 @@ MakeReminder::Info MakeReminder::addReminder() {
     string reminderText;
 
     Manage manage;
+    cout << "Which type of reminder do you want to make?\n";
     string filename = manage.selectOption();
-
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     while (reminderText.empty()) {
         cout << "Please enter a new reminder: ";

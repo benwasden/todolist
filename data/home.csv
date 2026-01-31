@@ -1,2 +1,5 @@
-1,Home,false
-2,Talk to cat,false
+1,Home,true
+2,Talk to cat,true
+3,Take out trash,false
+4,3,false
+5,Test,false

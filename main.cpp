@@ -8,6 +8,7 @@
 using namespace std;
 
 void clearScreen();
+void waitForEnter();
 
 int main()
 {
@@ -20,6 +21,7 @@ int main()
         cout << "1. Create a new reminder\n2. View all reminders\n3. View reminders by list\n4. Delete Completed Goals\n5. Exit\n";
         cout << "Make a selection: ";
         cin >> choice;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         switch (choice) {
             case 1: {
                 clearScreen();
@@ -28,7 +30,8 @@ int main()
 
                 ManageFile file;
                 file.writeFile(newReminder.filename, newReminder.reminder);
-                cout << "Successfully added!\n";
+
+                cout << "Successfully added!\n" << flush;
                 this_thread::sleep_for(chrono::seconds(1));
                 break;
             }
@@ -51,29 +54,40 @@ int main()
                     cout << "No reminders have been entered.\n";
                 };
                 cout << "Press Enter to continue..." << flush;
-                cin.ignore();
-                cin.get();
+                waitForEnter();
                 break;
             }
             case 3: {
                 clearScreen();
                 Manage manage;
+                cout << "Which list do you want to view?\n";
                 string selection = manage.selectOption();
                 vector<Reminder> goals = manage.requestedGoals(selection);
                 if (!goals.empty()) {
                     string choice2;
                     cout << "Would you like to mark a goal as complete? Y/N: ";
                     cin >> choice2;
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     if (choice2 == "Y" || choice2 == "Yes" || choice2 == "y" || choice2 == "yes") {
                         manage.completeGoal(selection);
                     }
                 };
                 cout << "Press Enter to return home..." << flush;
-                cin.ignore();
-                cin.get();
+                waitForEnter();
                 break;
             }
             case 4: {
+                clearScreen();
+                string choice3;
+                cout << "Are you sure you want to delete all completed reminders from all lists? Y/N: ";
+                cin >> choice3;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                if (choice3 == "Y" || choice3 == "Yes" || choice3 == "y" || choice3 == "yes") {
+                    Manage manage;
+                    manage.deleteAllCompletedGoals();
+                }
+                cout << "Press Enter to return home..." << flush;
+                waitForEnter();
                 break;
             }
             case 5: {
@@ -91,4 +105,10 @@ int main()
 
 void clearScreen() {
     cout << "\033[2J\033[1;1H" << flush;
+};
+
+void waitForEnter() {
+    // cin.clear();
+    // cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.get();
 };

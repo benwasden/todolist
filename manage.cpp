@@ -11,10 +11,10 @@ string Manage::selectOption() {
     string reminderText;
 
     while (selection < 1 || selection > 4) {
-        cout << "Which type of reminder do you want to make?\n";
         cout << "1. General\n2. Home\n3. Personal\n4. Work\n";
         cout << "Make a selection: ";
         cin >> selection;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (selection) {
             case 1: filename = "data/general.csv"; break;
@@ -56,4 +56,14 @@ void Manage::completeGoal(const string& filename) {
     cin >> id;
     ManageFile file;
     file.markComplete(filename, id);
+}
+
+void Manage::deleteAllCompletedGoals() {
+    ManageFile file;
+    file.deleteCompleted("data/general.csv");
+    file.deleteCompleted("data/home.csv");
+    file.deleteCompleted("data/personal.csv");
+    file.deleteCompleted("data/work.csv");
+
+    cout << "All completed goals deleted successfully.\n";
 }

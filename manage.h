@@ -9,4 +9,5 @@ class Manage {
         string selectOption();
         vector<Reminder> requestedGoals(string option);
         void completeGoal(const string& filename);
+        void deleteAllCompletedGoals();
 };
