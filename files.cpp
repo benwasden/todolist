@@ -1,63 +1,74 @@
+#include "files.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <map>
-#include <string>
-using namespace std;
 
-struct Reminder {
-    int id;
-    string text;
-    bool completed;
-};
+vector<Reminder> ManageFile::openFile(const string& filename) {
+    vector<Reminder> reminders;
+    ifstream file(filename);
 
-class ManageFile {
-    public:
-        map<string, string> openFile(const string filename) {
-            map<string, string> data_map;
-            ifstream file(filename);
+    if (!file.is_open()) {
+        cerr << "Error: couldn't open file " << filename << "\n";
+        return reminders;
+    }
 
-            if (!file.is_open()) {
-                cerr << "Error: couldn't open file " << filename << "\n";
-                return data_map;
-            };
+    string line;
+    while (getline(file, line)) {
+        stringstream lineToParse(line);
+        string idStr, text, completedStr;
 
-            string line;
-            while (getline(file, line)) {
-                stringstream lineToParse(line);
-                string key, value;
+        if (getline(lineToParse, idStr, ',') &&
+            getline(lineToParse, text, ',') &&
+            getline(lineToParse, completedStr)) {
 
-                if (getline(lineToParse, key, ',') && getline(lineToParse, value)) {
-                    if (!value.empty() && value.back() == '\r') {
-                        value.pop_back();
-                    }
-                    data_map[key] = value;
-                };
-            };
+            Reminder remind;
+            remind.id = stoi(idStr);
+            remind.text = text;
+            remind.completed = (completedStr == "true");
 
-            file.close();
-            return data_map;
+            reminders.push_back(remind);
         }
+    }
 
-        void writeFile(const string filename, const string newLine) {
-            fstream file;
-            file.open(filename, ios::out | ios::app);
+    return reminders;
+}
 
-            if (!file.is_open()) {
-                cerr << "Error: couldn't open file " << filename << "\n";
-            }
-            file << newLine << endl;
-            cerr << "Reminder successfully added!";
-        };
-    
-        map<string, string> readAllFiles() {
-            map<string, string> genFile = openFile("data/general.csv");
-            map<string, string> homeFile = openFile("data/home.csv");
-            map<string, string> persFile = openFile("data/personal.csv");
-            map<string, string> workFile = openFile("data/work.csv");
-            genFile.insert(homeFile.begin(), homeFile.end());
-            genFile.insert(persFile.begin(), persFile.end());
-            genFile.insert(workFile.begin(), workFile.end());
-            return genFile;
-        };
-};
+void ManageFile::writeFile(const string& filename, const Reminder& remind) {
+    ofstream file(filename, ios::app);
+    if (!file.is_open()) {
+        cerr << "Error when opening file " << filename << "\n";
+        return;
+    }
+
+    file << remind.id << "," << remind.text << "," << (remind.completed ? "true" : "false") << "\n";
+    cout << "Reminder added!";
+}
+
+vector<Reminder> ManageFile::readAllFiles() {
+    vector<Reminder> all;
+
+    auto append = [&](const string& file) {
+        auto next = openFile(file);
+        all.insert(all.end(), next.begin(), next.end());
+    };
+
+    append("data/general.csv");
+    append("data/home.csv");
+    append("data/personal.csv");
+    append("data/work.csv");
+
+    return all;
+}
+
+int ManageFile::getNextId(const string& filename) {
+    auto reminders = openFile(filename);
+
+    int maxId = 0;
+    for (const auto& remind : reminders) {
+        if (remind.id > maxId) {
+            maxId = remind.id;
+        }
+    }
+
+    return maxId + 1;
+}

@@ -1,4 +1,5 @@
-Test,C
-Not Done,X
-Finished,C
-Get cat food,X
+1,Test,true
+2,Not Done,false
+3,Finished,true
+4,Get cat food,false
+5,Cat toys,false

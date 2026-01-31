@@ -2,9 +2,8 @@
 #include <cstdlib>
 #include <thread>
 #include <chrono>
-#include <map>
-#include "reminder.cpp"
-#include "files.cpp"
+#include "reminder.h"
+#include "files.h"
 using namespace std;
 
 void clearScreen();
@@ -14,7 +13,7 @@ int main()
     int choice = 0;
 
     while (choice != 5) {
-        clearScreen();;
+        clearScreen();
         cout << "---Reminders Application---\n";
         cout << "Please select an option from the following list:\n";
         cout << "1. Create a new reminder\n2. View all reminders\n3. View reminders by list\n4. Delete Completed Goals\n5. Exit\n";
@@ -27,18 +26,24 @@ int main()
                 auto newReminder = reminder.addReminder();
 
                 ManageFile file;
-                file.writeFile(newReminder.filename, newReminder.newReminder);
+                file.writeFile(newReminder.filename, newReminder.reminder);
                 this_thread::sleep_for(chrono::seconds(1));
                 break;
             }
             case 2: {
-                clearScreen();;
+                clearScreen();
                 ManageFile files;
-                map<string, string> genFile = files.readAllFiles();
+                vector<Reminder> genFile = files.readAllFiles();
                 if (!genFile.empty()) {
                     cout << "---All Reminders---\n";
                     for (const auto& pair : genFile) {
-                        cout << pair.first << " - [" << pair.second << "]" << endl;
+                        string result;
+                        if (pair.completed == 1) {
+                            result = "C";
+                        } else {
+                            result = "X";
+                        };
+                        cout << pair.text << " - [" << result << "]" << endl;
                     };
                 } else {
                     cout << "No reminders have been entered.\n";
