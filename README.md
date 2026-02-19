@@ -7,7 +7,6 @@ I worked on this so I could learn C++. My experience prior to this was limited t
 
 
 
-[Software Demo Video]: Included in submit form.
 
 # Development Environment
 
